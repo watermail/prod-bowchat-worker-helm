@@ -1,36 +1,57 @@
-#Install the Worker:
+# Install or Upgrade the Worker
 
-helm install prod-bowchat-worker ./prod-bowchat-worker -n prod-bowchat
+Run the following command to install the chart or upgrade it if it already exists. This prevents "name already in use" errors.
+
+# Install the Worker:
+```bash
+helm upgrade --install prod-bowchat-worker . -n prod-bowchat
+```
+
+Go inside wsl under "/home/debasmita13/prod-bowchat-worker-helm" folder and run below commands.
+
+# Scale workers
+
+helm install prod-bowchat-worker . -n prod-bowchat
 
 
-#Upgrade:
+# Upgrade:
 
-helm upgrade prod-bowchat-worker ./prod-bowchat-worker -n prod-bowchat
-
-
-#Scale workers:
-
-helm upgrade prod-bowchat-worker ./prod-bowchat-worker \
-  --set replicaCount=3 \
-  -n prod-bowchat
+helm upgrade prod-bowchat-worker . -n prod-bowchat
 
 
-#For getting pods
+# Scale workers:
+
+```bash
+helm upgrade prod-bowchat-worker . --set replicaCount=3 -n prod-bowchat
+```
+
+# Get pods
+
+# For getting pods
+```bash
+kubectl get pods -n prod-bowchat
+```
 
 debasmita13@DESKTOP-2HHQS11:~/helm_k8s_poc$ kubectl get pods -n prod-bowchat
 
+# Delete Deployment
 
-#For deployment
+
+# For deployment
 
 debasmita13@DESKTOP-2HHQS11:~/helm_k8s_poc$ helm upgrade prod-bowchat-worker . -n prod-bowchat
 
 
-#For delete
+# For delete
 
+```bash
 kubectl delete deployment prod-bowchat-worker-worker -n prod-bowchat
+```
 
-#Commands
 
+# Ingress Commands
+
+```bash
 kubectl get ingress -n prod-bowchat
 
 helm list -n ingress-nginx
@@ -39,3 +60,10 @@ helm uninstall nginx-ingress -n ingress-nginx
 
 kubectl get svc -n ingress-nginx
 
+```
+
+# uninstall worker
+
+```bash
+helm uninstall prod-bowchat-worker -n prod-bowchat
+```
