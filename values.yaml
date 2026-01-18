@@ -1,0 +1,49 @@
+replicaCount: 1
+
+image:
+  repository: asia-south1-docker.pkg.dev/authentic-genre-444610-p2/prod-bow-chat/prod-bow-chat
+  tag: V_127
+  pullPolicy: IfNotPresent
+
+command: ["bundle", "exec", "rails", "s", "-b", "0.0.0.0", "-p", "3000"]
+args: []
+
+env:
+  RAILS_ENV: production
+  WORKER: "true"
+
+existingSecret: ""
+
+resources: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+database:
+  host: "34.47.203.206"
+  name: "bow_chat_stage"
+  # IMPORTANT: For production, override this value using --set or a secrets management tool.
+  password: "sdf8j97Yyit6"
+  user: "postgres"
+
+redisUrl: "redis://redis:6379"
+
+# IMPORTANT: For production, override this value using --set or a secrets management tool.
+secret_key_base: "bohnitech"
+
+service:
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: bowchat.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

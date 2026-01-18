@@ -1,0 +1,6 @@
+apiVersion: v2
+name: prod-bowchat-worker
+description: Helm chart for prod-bowchat background worker
+type: application
+version: 0.1.0
+appVersion: "V_127"

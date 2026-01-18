@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: worker
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          {{- if .Values.command }}
+          command:
+            {{- toYaml .Values.command | nindent 12 }}
+          {{- end }}
+
+          {{- if .Values.args }}
+          args:
+            {{- toYaml .Values.args | nindent 12 }}
+          {{- end }}
+
+          env:
+            - name: RAILS_ENV
+              value: {{ .Values.env.RAILS_ENV | quote }}
+            - name: WORKER
+              value: {{ .Values.env.WORKER | quote }}
+
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret | default (printf "%s-secret" .Release.Name) }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
